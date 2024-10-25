@@ -14,7 +14,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .build_server(true)
         .build_client(true)
         // Optionally add custom configuration
-        .out_dir("rust/generated") // Optional: output generated code to a specific directory
+        .out_dir("src/generated") // Optional: output generated code to a specific directory
         .compile(
             &proto_files,
             &proto_include_dirs,

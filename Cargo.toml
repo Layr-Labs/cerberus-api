@@ -2,11 +2,19 @@
 name = "cerberus-api"
 version = "0.0.1"
 edition = "2021"
+repository = "https://github.com/Layr-Labs/cerberus-api"
+authors = ["all@eigenlabs"]
+license-file = "LICENSE"
+rust-version = "1.82.0"
+
+[lib]
+name = "cerberus_api"
+path = "src/lib.rs"
 
 [dependencies]
 tonic = "0.9"
 prost = "0.11"
-tokio = { version = "1.0", features = ["full"] }
+tokio = { version = "1.37.0", features = ["test-util", "full", "sync"] }
 futures = "0.3"
 chrono = "0.4"
 uuid = { version = "1.0", features = ["v4"] }
