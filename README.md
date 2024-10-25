@@ -12,7 +12,7 @@ for implementation of sign and verify. If you use any other implementation, the 
 Eventually we will support more `HashToCurve` algorithms.
 
 ## Implementation
-* Go - https://github.com/Layr-Labs/cerberus (Coming Soon)
+* Go - https://github.com/Layr-Labs/cerberus
   
 ## Usage
 ### Signing Client
