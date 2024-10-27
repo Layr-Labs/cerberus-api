@@ -1,4 +1,4 @@
-name: Check make generate
+name: Check go generate
 on:
   push:
     branches:
@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   check-go-generate:
-    name: Check make generate
+    name: Check make generate-go
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -19,9 +19,6 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: '1.21'  # Specify the Go version you're using
-
-      - name: Set up Rust
-        uses: dsherret/rust-toolchain-file@v1
 
       - name: Install protoc-gen-go and protoc-gen-go-grpc
         run: |
@@ -41,10 +38,10 @@ jobs:
       - name: Run make generate
         run: make generate
 
-      - name: Check if make generate generated changes that should be committed
+      - name: Check if make generate-go generated changes that should be committed
         run: |
           if [ -n "$(git status --porcelain)" ]; then
-            echo "Error: make generate generated changes that should be committed. Please run 'make generate' and commit the changes."
+            echo "Error: make generate-go generated changes that should be committed. Please run 'make generate-go' and commit the changes."
             git diff
             git status
             exit 1
