@@ -7,6 +7,20 @@ authors = ["all@eigenlabs"]
 license-file = "LICENSE"
 rust-version = "1.82.0"
 
+# Exclude unnecessary files from the package
+exclude = [
+    "/.github/*",
+    "/.idea/*",
+    "/examples/*",
+    "*.proto",
+    "./proto/*",
+    "./pkg/*",
+    "go.sum",
+    "go.mod",
+    "build.rs",
+    "./target/*"
+]
+
 [lib]
 name = "cerberus_api"
 path = "src/lib.rs"

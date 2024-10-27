@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 jobs:
-  check-make-generate:
+  check-go-generate:
     name: Check make generate
     runs-on: ubuntu-latest
     steps:
@@ -19,6 +19,9 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: '1.21'  # Specify the Go version you're using
+
+      - name: Set up Rust
+        uses: dsherret/rust-toolchain-file@v1
 
       - name: Install protoc-gen-go and protoc-gen-go-grpc
         run: |
