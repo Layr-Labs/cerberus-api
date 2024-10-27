@@ -4,7 +4,7 @@ use cerberus_api::{
 };
 
 #[tokio::main]
-async fn main() -> Result<()> {
+async fn main() -> Result<(),Box<dyn std::error::Error>> {
   let mut client = KeyManagerClient::connect("http://[::1]:50051").await?;
 
   let request = tonic::Request::new(ListKeysRequest {});
