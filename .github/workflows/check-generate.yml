@@ -1,4 +1,4 @@
-name: Check go generate
+name: Check make generate
 on:
   push:
     branches:
@@ -35,13 +35,39 @@ jobs:
       - name: Check buf installation
         run: buf --version
 
-      - name: Run make generate
-        run: make generate
+      - name: Run make generate-go
+        run: make generate-go
 
       - name: Check if make generate-go generated changes that should be committed
         run: |
           if [ -n "$(git status --porcelain)" ]; then
             echo "Error: make generate-go generated changes that should be committed. Please run 'make generate-go' and commit the changes."
+            git diff
+            git status
+            exit 1
+          fi
+  
+  check-rust-generate:
+    name: Check make generate-rs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@1.82.0
+
+      - name: Install Protoc
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y protobuf-compiler
+
+      - name: Run make generate-rs
+        run: make generate-rs
+
+      - name: Check if make generate-rs generated changes that should be committed
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "Error: make generate-rs generated changes that should be committed. Please run 'make generate-rs' and commit the changes."
             git diff
             git status
             exit 1
