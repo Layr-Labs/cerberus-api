@@ -6,6 +6,9 @@ The spec currently only support BLS on bn254 signing.
 ### Go
 The go bindings resides in [pkg/api/vi](pkg/api/v1) directory.
 
+### Rust
+The rust bindings resides in [src](src) directory.
+
 ## Signing Quirks
 If you are implementing a version of this, please make sure to check [this code](https://github.com/Layr-Labs/cerberus/blob/6ce641c6323c412b2b9383169ee70fef22c13c60/internal/crypto/utils.go#L30-L36) 
 for implementation of sign and verify. If you use any other implementation, the signatures will not be compatible with EigenLayer contracts.

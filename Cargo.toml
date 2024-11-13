@@ -6,6 +6,10 @@ repository = "https://github.com/Layr-Labs/cerberus-api"
 authors = ["all@eigenlabs"]
 license-file = "LICENSE"
 rust-version = "1.82.0"
+description = "API specification for cerberus remote signer"
+readme = "README.md"
+homepage = "https://github.com/Layr-Labs/cerberus-api"
+keywords = ["bn254", "signer"]
 
 # Exclude unnecessary files from the package
 exclude = [
