@@ -17,12 +17,12 @@ exclude = [
     "/.idea/*",
     "/examples/*",
     "*.proto",
-    "./proto/*",
-    "./pkg/*",
+    "/proto/*",
+    "/pkg/*",
     "go.sum",
     "go.mod",
     "build.rs",
-    "./target/*"
+    "/target/*"
 ]
 
 [lib]
