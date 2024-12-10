@@ -21,6 +21,9 @@ pub struct GenerateKeyPairResponse {
     /// G2 Public key hex of the generated keypair
     #[prost(string, tag = "4")]
     pub public_key_g2: ::prost::alloc::string::String,
+    /// API key associated with the keypair
+    #[prost(string, tag = "5")]
+    pub api_key: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -44,6 +47,9 @@ pub struct ImportKeyResponse {
     /// G2 Public key hex of the imported keypair
     #[prost(string, tag = "2")]
     pub public_key_g2: ::prost::alloc::string::String,
+    /// API key associated with the keypair
+    #[prost(string, tag = "3")]
+    pub api_key: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]

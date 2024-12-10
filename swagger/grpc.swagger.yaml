@@ -1,8 +1,9 @@
 swagger: "2.0"
 info:
-  title: key_manager.proto
+  title: admin.proto
   version: version not set
 tags:
+  - name: Admin
   - name: KeyManager
   - name: Signer
 consumes:
@@ -10,6 +11,87 @@ consumes:
 produces:
   - application/json
 paths:
+  /admin.v1.Admin/GenerateApiKey:
+    post:
+      summary: GenerateApiKey this is for generating API key for previously generated keys which did not have API key. It should fail for keys which already has API Key
+      operationId: Admin_GenerateApiKey
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1GenerateApiKeyResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/v1GenerateApiKeyRequest'
+      tags:
+        - Admin
+  /admin.v1.Admin/LockKey:
+    post:
+      operationId: Admin_LockKey
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1LockKeyResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/v1LockKeyRequest'
+      tags:
+        - Admin
+  /admin.v1.Admin/RotateApiKey:
+    post:
+      operationId: Admin_RotateApiKey
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1RotateApiKeyResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/v1RotateApiKeyRequest'
+      tags:
+        - Admin
+  /admin.v1.Admin/UnlockKey:
+    post:
+      operationId: Admin_UnlockKey
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1UnlockKeyResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/v1UnlockKeyRequest'
+      tags:
+        - Admin
   /keymanager.v1.KeyManager/GenerateKeyPair:
     post:
       operationId: KeyManager_GenerateKeyPair
@@ -150,6 +232,16 @@ definitions:
         items:
           type: object
           $ref: '#/definitions/protobufAny'
+  v1GenerateApiKeyRequest:
+    type: object
+    properties:
+      publicKey:
+        type: string
+  v1GenerateApiKeyResponse:
+    type: object
+    properties:
+      apiKey:
+        type: string
   v1GenerateKeyPairRequest:
     type: object
     properties:
@@ -173,6 +265,9 @@ definitions:
       publicKeyG2:
         type: string
         title: G2 Public key hex of the generated keypair
+      apiKey:
+        type: string
+        title: API key associated with the keypair
   v1GetKeyMetadataRequest:
     type: object
     properties:
@@ -217,6 +312,9 @@ definitions:
       publicKeyG2:
         type: string
         title: G2 Public key hex of the imported keypair
+      apiKey:
+        type: string
+        title: API key associated with the keypair
   v1ListKeysRequest:
     type: object
   v1ListKeysResponse:
@@ -228,6 +326,13 @@ definitions:
           type: object
           $ref: '#/definitions/v1PublicKey'
         title: List of public keys
+  v1LockKeyRequest:
+    type: object
+    properties:
+      publicKey:
+        type: string
+  v1LockKeyResponse:
+    type: object
   v1PublicKey:
     type: object
     properties:
@@ -237,6 +342,18 @@ definitions:
       publicKeyG2:
         type: string
         title: G2 Public key
+  v1RotateApiKeyRequest:
+    type: object
+    properties:
+      publicKey:
+        type: string
+  v1RotateApiKeyResponse:
+    type: object
+    properties:
+      publicKey:
+        type: string
+      apiKey:
+        type: string
   v1SignG1Request:
     type: object
     properties:
@@ -279,3 +396,10 @@ definitions:
         type: string
         format: byte
         title: Signature of the data
+  v1UnlockKeyRequest:
+    type: object
+    properties:
+      publicKey:
+        type: string
+  v1UnlockKeyResponse:
+    type: object

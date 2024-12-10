@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package admin.v1;
+
+option go_package = "github.com/layr-labs/cerberus-api/pkg/api/v1";
+
+service Admin {
+  rpc LockKey(LockKeyRequest) returns (LockKeyResponse) {}
+  rpc UnlockKey(UnlockKeyRequest) returns (UnlockKeyResponse) {}
+  rpc RotateApiKey(RotateApiKeyRequest) returns (RotateApiKeyResponse) {}
+  // GenerateApiKey this is for generating API key for previously generated keys which did not have API key. It should fail for keys which already has API Key
+  rpc GenerateApiKey(GenerateApiKeyRequest) returns (GenerateApiKeyResponse) {}
+}
+
+message LockKeyRequest {
+  string public_key = 1;
+}
+
+message LockKeyResponse {
+}
+
+message UnlockKeyRequest {
+  string public_key = 1;
+}
+
+message UnlockKeyResponse {
+}
+
+message RotateApiKeyRequest {
+  string public_key = 1;
+}
+
+message RotateApiKeyResponse {
+  string public_key = 1;
+
+  string api_key = 2;
+}
+
+message GenerateApiKeyRequest {
+  string public_key = 1;
+}
+
+message GenerateApiKeyResponse {
+  string api_key = 1;
+}
