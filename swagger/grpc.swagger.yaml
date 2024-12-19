@@ -177,9 +177,9 @@ definitions:
   v1SignGenericRequest:
     type: object
     properties:
-      publicKey:
+      publicKeyG1:
         type: string
-        title: Public key of the keypair to sign with
+        title: G1 public key of the keypair to sign with
       data:
         type: string
         format: byte
