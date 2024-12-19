@@ -49,6 +49,22 @@ pub struct ListKeysResponse {
     #[prost(string, repeated, tag = "1")]
     pub public_keys: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetPublicKeysRequest {
+    #[prost(string, tag = "1")]
+    pub public_key: ::prost::alloc::string::String,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetPublicKeysResponse {
+    /// G1 Public key
+    #[prost(string, tag = "1")]
+    pub public_key_g1: ::prost::alloc::string::String,
+    /// G2 Public key
+    #[prost(string, tag = "2")]
+    pub public_key_g2: ::prost::alloc::string::String,
+}
 /// Generated client implementations.
 pub mod key_manager_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -209,6 +225,31 @@ pub mod key_manager_client {
                 .insert(GrpcMethod::new("keymanager.v1.KeyManager", "ListKeys"));
             self.inner.unary(req, path, codec).await
         }
+        pub async fn get_public_keys(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetPublicKeysRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::GetPublicKeysResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/keymanager.v1.KeyManager/GetPublicKeys",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("keymanager.v1.KeyManager", "GetPublicKeys"));
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// Generated server implementations.
@@ -237,6 +278,13 @@ pub mod key_manager_server {
             request: tonic::Request<super::ListKeysRequest>,
         ) -> std::result::Result<
             tonic::Response<super::ListKeysResponse>,
+            tonic::Status,
+        >;
+        async fn get_public_keys(
+            &self,
+            request: tonic::Request<super::GetPublicKeysRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::GetPublicKeysResponse>,
             tonic::Status,
         >;
     }
@@ -438,6 +486,52 @@ pub mod key_manager_server {
                     let fut = async move {
                         let inner = inner.0;
                         let method = ListKeysSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            )
+                            .apply_max_message_size_config(
+                                max_decoding_message_size,
+                                max_encoding_message_size,
+                            );
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/keymanager.v1.KeyManager/GetPublicKeys" => {
+                    #[allow(non_camel_case_types)]
+                    struct GetPublicKeysSvc<T: KeyManager>(pub Arc<T>);
+                    impl<
+                        T: KeyManager,
+                    > tonic::server::UnaryService<super::GetPublicKeysRequest>
+                    for GetPublicKeysSvc<T> {
+                        type Response = super::GetPublicKeysResponse;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::GetPublicKeysRequest>,
+                        ) -> Self::Future {
+                            let inner = Arc::clone(&self.0);
+                            let fut = async move {
+                                (*inner).get_public_keys(request).await
+                            };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let max_decoding_message_size = self.max_decoding_message_size;
+                    let max_encoding_message_size = self.max_encoding_message_size;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let inner = inner.0;
+                        let method = GetPublicKeysSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = tonic::server::Grpc::new(codec)
                             .apply_compression_config(

@@ -8,6 +8,7 @@ service KeyManager {
   rpc GenerateKeyPair(GenerateKeyPairRequest) returns (GenerateKeyPairResponse) {}
   rpc ImportKey(ImportKeyRequest) returns (ImportKeyResponse) {}
   rpc ListKeys(ListKeysRequest) returns (ListKeysResponse) {}
+  rpc GetPublicKeys(GetPublicKeysRequest) returns (GetPublicKeysResponse) {}
 }
 
 message GenerateKeyPairRequest {
@@ -50,4 +51,15 @@ message ListKeysRequest {}
 message ListKeysResponse {
   // List of public keys
   repeated string public_keys = 1;
+}
+
+message GetPublicKeysRequest {
+  string public_key = 1;
+}
+
+message GetPublicKeysResponse {
+  // G1 Public key
+  string public_key_g1 = 1;
+  // G2 Public key
+  string public_key_g2 = 2;
 }
