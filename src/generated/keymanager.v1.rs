@@ -40,7 +40,7 @@ pub struct ImportKeyRequest {
 pub struct ImportKeyResponse {
     /// G1 Public key hex of the imported keypair
     #[prost(string, tag = "1")]
-    pub public_key: ::prost::alloc::string::String,
+    pub public_key_g1: ::prost::alloc::string::String,
     /// G2 Public key hex of the imported keypair
     #[prost(string, tag = "2")]
     pub public_key_g2: ::prost::alloc::string::String,

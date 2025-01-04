@@ -1,6 +1,11 @@
-## cerberus-api
+# cerberus-api
 This is the API spec of remote signer. 
 The spec currently only support BLS on bn254 signing. 
+
+## Disclaimer
+🚧 Cerberus-api is under active development and has not been audited.
+Cerberus-api is rapidly being upgraded, features may be added, removed or otherwise improved or modified and interfaces will have breaking changes.
+Cerberus-api should be used only for testing purposes and not in production. Cerberus-api is provided "as is" and Eigen Labs, Inc. does not guarantee its functionality or provide support for its use in production. 🚧
 
 ## Supported Bindings
 ### Go

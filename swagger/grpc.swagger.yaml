@@ -148,7 +148,7 @@ definitions:
   v1ImportKeyResponse:
     type: object
     properties:
-      publicKey:
+      publicKeyG1:
         type: string
         title: G1 Public key hex of the imported keypair
       publicKeyG2:

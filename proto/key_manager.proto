@@ -44,7 +44,7 @@ message ImportKeyRequest {
 
 message ImportKeyResponse {
   // G1 Public key hex of the imported keypair
-  string public_key = 1;
+  string public_key_g1 = 1;
   // G2 Public key hex of the imported keypair
   string public_key_g2 = 2;
 }
