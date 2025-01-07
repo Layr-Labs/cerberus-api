@@ -81,10 +81,10 @@ pub struct GetKeyMetadataResponse {
     /// Public key G2
     #[prost(string, tag = "2")]
     pub public_key_g2: ::prost::alloc::string::String,
-    /// Create at timestamp
+    /// Unix timestamp of when the key was created
     #[prost(int64, tag = "3")]
     pub created_at: i64,
-    /// Updated at timestamp
+    /// Unix timestamp of when the key was last updated
     #[prost(int64, tag = "4")]
     pub updated_at: i64,
 }

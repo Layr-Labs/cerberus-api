@@ -467,9 +467,9 @@ type GetKeyMetadataResponse struct {
 	PublicKeyG1 string `protobuf:"bytes,1,opt,name=public_key_g1,json=publicKeyG1,proto3" json:"public_key_g1,omitempty"`
 	// Public key G2
 	PublicKeyG2 string `protobuf:"bytes,2,opt,name=public_key_g2,json=publicKeyG2,proto3" json:"public_key_g2,omitempty"`
-	// Create at timestamp
+	// Unix timestamp of when the key was created
 	CreatedAt int64 `protobuf:"varint,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	// Updated at timestamp
+	// Unix timestamp of when the key was last updated
 	UpdatedAt int64 `protobuf:"varint,4,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 }
 

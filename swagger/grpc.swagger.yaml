@@ -171,11 +171,11 @@ definitions:
       createdAt:
         type: string
         format: int64
-        title: Create at timestamp
+        title: Unix timestamp of when the key was created
       updatedAt:
         type: string
         format: int64
-        title: Updated at timestamp
+        title: Unix timestamp of when the key was last updated
   v1ImportKeyRequest:
     type: object
     properties:
