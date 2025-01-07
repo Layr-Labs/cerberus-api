@@ -22,6 +22,7 @@ const (
 	KeyManager_GenerateKeyPair_FullMethodName = "/keymanager.v1.KeyManager/GenerateKeyPair"
 	KeyManager_ImportKey_FullMethodName       = "/keymanager.v1.KeyManager/ImportKey"
 	KeyManager_ListKeys_FullMethodName        = "/keymanager.v1.KeyManager/ListKeys"
+	KeyManager_GetKeyMetadata_FullMethodName  = "/keymanager.v1.KeyManager/GetKeyMetadata"
 )
 
 // KeyManagerClient is the client API for KeyManager service.
@@ -31,6 +32,7 @@ type KeyManagerClient interface {
 	GenerateKeyPair(ctx context.Context, in *GenerateKeyPairRequest, opts ...grpc.CallOption) (*GenerateKeyPairResponse, error)
 	ImportKey(ctx context.Context, in *ImportKeyRequest, opts ...grpc.CallOption) (*ImportKeyResponse, error)
 	ListKeys(ctx context.Context, in *ListKeysRequest, opts ...grpc.CallOption) (*ListKeysResponse, error)
+	GetKeyMetadata(ctx context.Context, in *GetKeyMetadataRequest, opts ...grpc.CallOption) (*GetKeyMetadataResponse, error)
 }
 
 type keyManagerClient struct {
@@ -68,6 +70,15 @@ func (c *keyManagerClient) ListKeys(ctx context.Context, in *ListKeysRequest, op
 	return out, nil
 }
 
+func (c *keyManagerClient) GetKeyMetadata(ctx context.Context, in *GetKeyMetadataRequest, opts ...grpc.CallOption) (*GetKeyMetadataResponse, error) {
+	out := new(GetKeyMetadataResponse)
+	err := c.cc.Invoke(ctx, KeyManager_GetKeyMetadata_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // KeyManagerServer is the server API for KeyManager service.
 // All implementations must embed UnimplementedKeyManagerServer
 // for forward compatibility
@@ -75,6 +86,7 @@ type KeyManagerServer interface {
 	GenerateKeyPair(context.Context, *GenerateKeyPairRequest) (*GenerateKeyPairResponse, error)
 	ImportKey(context.Context, *ImportKeyRequest) (*ImportKeyResponse, error)
 	ListKeys(context.Context, *ListKeysRequest) (*ListKeysResponse, error)
+	GetKeyMetadata(context.Context, *GetKeyMetadataRequest) (*GetKeyMetadataResponse, error)
 	mustEmbedUnimplementedKeyManagerServer()
 }
 
@@ -90,6 +102,9 @@ func (UnimplementedKeyManagerServer) ImportKey(context.Context, *ImportKeyReques
 }
 func (UnimplementedKeyManagerServer) ListKeys(context.Context, *ListKeysRequest) (*ListKeysResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListKeys not implemented")
+}
+func (UnimplementedKeyManagerServer) GetKeyMetadata(context.Context, *GetKeyMetadataRequest) (*GetKeyMetadataResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetKeyMetadata not implemented")
 }
 func (UnimplementedKeyManagerServer) mustEmbedUnimplementedKeyManagerServer() {}
 
@@ -158,6 +173,24 @@ func _KeyManager_ListKeys_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _KeyManager_GetKeyMetadata_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetKeyMetadataRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KeyManagerServer).GetKeyMetadata(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: KeyManager_GetKeyMetadata_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KeyManagerServer).GetKeyMetadata(ctx, req.(*GetKeyMetadataRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // KeyManager_ServiceDesc is the grpc.ServiceDesc for KeyManager service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -176,6 +209,10 @@ var KeyManager_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListKeys",
 			Handler:    _KeyManager_ListKeys_Handler,
+		},
+		{
+			MethodName: "GetKeyMetadata",
+			Handler:    _KeyManager_GetKeyMetadata_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

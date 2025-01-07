@@ -8,6 +8,7 @@ service KeyManager {
   rpc GenerateKeyPair(GenerateKeyPairRequest) returns (GenerateKeyPairResponse) {}
   rpc ImportKey(ImportKeyRequest) returns (ImportKeyResponse) {}
   rpc ListKeys(ListKeysRequest) returns (ListKeysResponse) {}
+  rpc GetKeyMetadata(GetKeyMetadataRequest) returns (GetKeyMetadataResponse) {}
 }
 
 message GenerateKeyPairRequest {
@@ -61,4 +62,20 @@ message ListKeysRequest {}
 message ListKeysResponse {
   // List of public keys
   repeated PublicKey public_keys = 1;
+}
+
+message GetKeyMetadataRequest {
+  // Public key to get
+  string public_key_g1 = 1;
+}
+
+message GetKeyMetadataResponse {
+  // Public key G1
+  string public_key_g1 = 1;
+  // Public key G2
+  string public_key_g2 = 2;
+  // Create at timestamp
+  int64 created_at = 3;
+  // Updated at timestamp
+  int64 updated_at = 4;
 }
