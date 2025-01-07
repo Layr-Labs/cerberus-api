@@ -6,6 +6,7 @@ option go_package = "github.com/layr-labs/cerberus-api/pkg/api/v1";
 
 service Signer {
   rpc SignGeneric(SignGenericRequest) returns (SignGenericResponse) {}
+  rpc SignG1(SignG1Request) returns (SignG1Response) {}
 }
 
 message SignGenericRequest {
@@ -20,6 +21,23 @@ message SignGenericRequest {
 }
 
 message SignGenericResponse {
+  // Signature of the data
+  bytes signature = 1;
+}
+
+message SignG1Request {
+  // G1 public key of the keypair to sign with
+  string public_key_g1 = 1;
+
+  // Serialized G1 point to sign
+  // https://github.com/Layr-Labs/cerberus/blob/bd104cafcb8e96bb54aa532e4f210023a6743ab5/internal/crypto/bn254.go#L11
+  bytes data = 2;
+
+  // Password to unlock the keypair if using local filesystem for keystore
+  string password = 3;
+}
+
+message SignG1Response {
   // Signature of the data
   bytes signature = 1;
 }
