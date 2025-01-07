@@ -1,9 +1,9 @@
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SignGenericRequest {
-    /// Public key of the keypair to sign with
+    /// G1 public key of the keypair to sign with
     #[prost(string, tag = "1")]
-    pub public_key: ::prost::alloc::string::String,
+    pub public_key_g1: ::prost::alloc::string::String,
     /// Data to sign
     #[prost(bytes = "vec", tag = "2")]
     pub data: ::prost::alloc::vec::Vec<u8>,

@@ -8,6 +8,7 @@ service KeyManager {
   rpc GenerateKeyPair(GenerateKeyPairRequest) returns (GenerateKeyPairResponse) {}
   rpc ImportKey(ImportKeyRequest) returns (ImportKeyResponse) {}
   rpc ListKeys(ListKeysRequest) returns (ListKeysResponse) {}
+  rpc GetKeyMetadata(GetKeyMetadataRequest) returns (GetKeyMetadataResponse) {}
 }
 
 message GenerateKeyPairRequest {
@@ -18,14 +19,17 @@ message GenerateKeyPairRequest {
 }
 
 message GenerateKeyPairResponse {
-  // Public key hex of the generated keypair
-  string public_key = 1;
+  // G1 Public key hex of the generated keypair
+  string public_key_g1 = 1;
 
   // Private key hex of the generated keypair
   string private_key = 2;
 
   // Mnemonic of the generated keypair
   string mnemonic = 3;
+
+  // G2 Public key hex of the generated keypair
+  string public_key_g2 = 4;
 }
 
 message ImportKeyRequest {
@@ -37,17 +41,41 @@ message ImportKeyRequest {
 
   // Password to encrypt the private key
   string password = 3;
-
 }
 
 message ImportKeyResponse {
-  // Public key hex of the imported keypair
-  string public_key = 1;
+  // G1 Public key hex of the imported keypair
+  string public_key_g1 = 1;
+  // G2 Public key hex of the imported keypair
+  string public_key_g2 = 2;
+}
+
+message PublicKey {
+  // G1 Public key
+  string public_key_g1 = 1;
+  // G2 Public key
+  string public_key_g2 = 2;
 }
 
 message ListKeysRequest {}
 
 message ListKeysResponse {
   // List of public keys
-  repeated string public_keys = 1;
+  repeated PublicKey public_keys = 1;
+}
+
+message GetKeyMetadataRequest {
+  // Public key to get
+  string public_key_g1 = 1;
+}
+
+message GetKeyMetadataResponse {
+  // Public key G1
+  string public_key_g1 = 1;
+  // Public key G2
+  string public_key_g2 = 2;
+  // Unix timestamp of when the key was created
+  int64 created_at = 3;
+  // Unix timestamp of when the key was last updated
+  int64 updated_at = 4;
 }

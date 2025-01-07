@@ -30,6 +30,26 @@ paths:
             $ref: '#/definitions/v1GenerateKeyPairRequest'
       tags:
         - KeyManager
+  /keymanager.v1.KeyManager/GetKeyMetadata:
+    post:
+      operationId: KeyManager_GetKeyMetadata
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1GetKeyMetadataResponse'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/v1GetKeyMetadataRequest'
+      tags:
+        - KeyManager
   /keymanager.v1.KeyManager/ImportKey:
     post:
       operationId: KeyManager_ImportKey
@@ -121,15 +141,41 @@ definitions:
   v1GenerateKeyPairResponse:
     type: object
     properties:
-      publicKey:
+      publicKeyG1:
         type: string
-        title: Public key hex of the generated keypair
+        title: G1 Public key hex of the generated keypair
       privateKey:
         type: string
         title: Private key hex of the generated keypair
       mnemonic:
         type: string
         title: Mnemonic of the generated keypair
+      publicKeyG2:
+        type: string
+        title: G2 Public key hex of the generated keypair
+  v1GetKeyMetadataRequest:
+    type: object
+    properties:
+      publicKeyG1:
+        type: string
+        title: Public key to get
+  v1GetKeyMetadataResponse:
+    type: object
+    properties:
+      publicKeyG1:
+        type: string
+        title: Public key G1
+      publicKeyG2:
+        type: string
+        title: Public key G2
+      createdAt:
+        type: string
+        format: int64
+        title: Unix timestamp of when the key was created
+      updatedAt:
+        type: string
+        format: int64
+        title: Unix timestamp of when the key was last updated
   v1ImportKeyRequest:
     type: object
     properties:
@@ -145,9 +191,12 @@ definitions:
   v1ImportKeyResponse:
     type: object
     properties:
-      publicKey:
+      publicKeyG1:
         type: string
-        title: Public key hex of the imported keypair
+        title: G1 Public key hex of the imported keypair
+      publicKeyG2:
+        type: string
+        title: G2 Public key hex of the imported keypair
   v1ListKeysRequest:
     type: object
   v1ListKeysResponse:
@@ -156,14 +205,24 @@ definitions:
       publicKeys:
         type: array
         items:
-          type: string
+          type: object
+          $ref: '#/definitions/v1PublicKey'
         title: List of public keys
+  v1PublicKey:
+    type: object
+    properties:
+      publicKeyG1:
+        type: string
+        title: G1 Public key
+      publicKeyG2:
+        type: string
+        title: G2 Public key
   v1SignGenericRequest:
     type: object
     properties:
-      publicKey:
+      publicKeyG1:
         type: string
-        title: Public key of the keypair to sign with
+        title: G1 public key of the keypair to sign with
       data:
         type: string
         format: byte
