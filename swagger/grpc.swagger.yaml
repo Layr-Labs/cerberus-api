@@ -90,6 +90,26 @@ paths:
             $ref: '#/definitions/v1ListKeysRequest'
       tags:
         - KeyManager
+  /signer.v1.Signer/SignG1:
+    post:
+      operationId: Signer_SignG1
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1SignG1Response'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/v1SignG1Request'
+      tags:
+        - Signer
   /signer.v1.Signer/SignGeneric:
     post:
       operationId: Signer_SignGeneric
@@ -217,6 +237,28 @@ definitions:
       publicKeyG2:
         type: string
         title: G2 Public key
+  v1SignG1Request:
+    type: object
+    properties:
+      publicKeyG1:
+        type: string
+        title: G1 public key of the keypair to sign with
+      data:
+        type: string
+        format: byte
+        title: |-
+          Serialized G1 point to sign
+          https://github.com/Layr-Labs/cerberus/blob/bd104cafcb8e96bb54aa532e4f210023a6743ab5/internal/crypto/bn254.go#L11
+      password:
+        type: string
+        title: Password to unlock the keypair if using local filesystem for keystore
+  v1SignG1Response:
+    type: object
+    properties:
+      signature:
+        type: string
+        format: byte
+        title: Signature of the data
   v1SignGenericRequest:
     type: object
     properties:

@@ -18,6 +18,27 @@ pub struct SignGenericResponse {
     #[prost(bytes = "vec", tag = "1")]
     pub signature: ::prost::alloc::vec::Vec<u8>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SignG1Request {
+    /// G1 public key of the keypair to sign with
+    #[prost(string, tag = "1")]
+    pub public_key_g1: ::prost::alloc::string::String,
+    /// Serialized G1 point to sign
+    /// <https://github.com/Layr-Labs/cerberus/blob/bd104cafcb8e96bb54aa532e4f210023a6743ab5/internal/crypto/bn254.go#L11>
+    #[prost(bytes = "vec", tag = "2")]
+    pub data: ::prost::alloc::vec::Vec<u8>,
+    /// Password to unlock the keypair if using local filesystem for keystore
+    #[prost(string, tag = "3")]
+    pub password: ::prost::alloc::string::String,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SignG1Response {
+    /// Signature of the data
+    #[prost(bytes = "vec", tag = "1")]
+    pub signature: ::prost::alloc::vec::Vec<u8>,
+}
 /// Generated client implementations.
 pub mod signer_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -128,6 +149,25 @@ pub mod signer_client {
                 .insert(GrpcMethod::new("signer.v1.Signer", "SignGeneric"));
             self.inner.unary(req, path, codec).await
         }
+        pub async fn sign_g1(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SignG1Request>,
+        ) -> std::result::Result<tonic::Response<super::SignG1Response>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static("/signer.v1.Signer/SignG1");
+            let mut req = request.into_request();
+            req.extensions_mut().insert(GrpcMethod::new("signer.v1.Signer", "SignG1"));
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// Generated server implementations.
@@ -144,6 +184,10 @@ pub mod signer_server {
             tonic::Response<super::SignGenericResponse>,
             tonic::Status,
         >;
+        async fn sign_g1(
+            &self,
+            request: tonic::Request<super::SignG1Request>,
+        ) -> std::result::Result<tonic::Response<super::SignG1Response>, tonic::Status>;
     }
     #[derive(Debug)]
     pub struct SignerServer<T: Signer> {
@@ -255,6 +299,48 @@ pub mod signer_server {
                     let fut = async move {
                         let inner = inner.0;
                         let method = SignGenericSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            )
+                            .apply_max_message_size_config(
+                                max_decoding_message_size,
+                                max_encoding_message_size,
+                            );
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/signer.v1.Signer/SignG1" => {
+                    #[allow(non_camel_case_types)]
+                    struct SignG1Svc<T: Signer>(pub Arc<T>);
+                    impl<T: Signer> tonic::server::UnaryService<super::SignG1Request>
+                    for SignG1Svc<T> {
+                        type Response = super::SignG1Response;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::SignG1Request>,
+                        ) -> Self::Future {
+                            let inner = Arc::clone(&self.0);
+                            let fut = async move { (*inner).sign_g1(request).await };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let max_decoding_message_size = self.max_decoding_message_size;
+                    let max_encoding_message_size = self.max_encoding_message_size;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let inner = inner.0;
+                        let method = SignG1Svc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = tonic::server::Grpc::new(codec)
                             .apply_compression_config(

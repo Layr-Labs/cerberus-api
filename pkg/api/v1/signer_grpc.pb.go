@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 
 const (
 	Signer_SignGeneric_FullMethodName = "/signer.v1.Signer/SignGeneric"
+	Signer_SignG1_FullMethodName      = "/signer.v1.Signer/SignG1"
 )
 
 // SignerClient is the client API for Signer service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SignerClient interface {
 	SignGeneric(ctx context.Context, in *SignGenericRequest, opts ...grpc.CallOption) (*SignGenericResponse, error)
+	SignG1(ctx context.Context, in *SignG1Request, opts ...grpc.CallOption) (*SignG1Response, error)
 }
 
 type signerClient struct {
@@ -46,11 +48,21 @@ func (c *signerClient) SignGeneric(ctx context.Context, in *SignGenericRequest, 
 	return out, nil
 }
 
+func (c *signerClient) SignG1(ctx context.Context, in *SignG1Request, opts ...grpc.CallOption) (*SignG1Response, error) {
+	out := new(SignG1Response)
+	err := c.cc.Invoke(ctx, Signer_SignG1_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SignerServer is the server API for Signer service.
 // All implementations must embed UnimplementedSignerServer
 // for forward compatibility
 type SignerServer interface {
 	SignGeneric(context.Context, *SignGenericRequest) (*SignGenericResponse, error)
+	SignG1(context.Context, *SignG1Request) (*SignG1Response, error)
 	mustEmbedUnimplementedSignerServer()
 }
 
@@ -60,6 +72,9 @@ type UnimplementedSignerServer struct {
 
 func (UnimplementedSignerServer) SignGeneric(context.Context, *SignGenericRequest) (*SignGenericResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SignGeneric not implemented")
+}
+func (UnimplementedSignerServer) SignG1(context.Context, *SignG1Request) (*SignG1Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SignG1 not implemented")
 }
 func (UnimplementedSignerServer) mustEmbedUnimplementedSignerServer() {}
 
@@ -92,6 +107,24 @@ func _Signer_SignGeneric_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Signer_SignG1_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SignG1Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SignerServer).SignG1(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Signer_SignG1_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SignerServer).SignG1(ctx, req.(*SignG1Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Signer_ServiceDesc is the grpc.ServiceDesc for Signer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -102,6 +135,10 @@ var Signer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SignGeneric",
 			Handler:    _Signer_SignGeneric_Handler,
+		},
+		{
+			MethodName: "SignG1",
+			Handler:    _Signer_SignG1_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
