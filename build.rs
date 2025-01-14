@@ -3,7 +3,8 @@ use std::path::PathBuf;
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let proto_files = vec![
         "proto/key_manager.proto",
-        "proto/signer.proto"
+        "proto/signer.proto",
+        "proto/admin.proto"
     ];
 
     let proto_include_dirs = vec![

@@ -30,6 +30,9 @@ message GenerateKeyPairResponse {
 
   // G2 Public key hex of the generated keypair
   string public_key_g2 = 4;
+
+  // API key associated with the keypair
+  string api_key = 5;
 }
 
 message ImportKeyRequest {
@@ -48,6 +51,8 @@ message ImportKeyResponse {
   string public_key_g1 = 1;
   // G2 Public key hex of the imported keypair
   string public_key_g2 = 2;
+  // API key associated with the keypair
+  string api_key = 3;
 }
 
 message PublicKey {
