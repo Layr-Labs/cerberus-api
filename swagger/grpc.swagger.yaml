@@ -235,7 +235,7 @@ definitions:
   v1GenerateApiKeyRequest:
     type: object
     properties:
-      publicKey:
+      publicKeyG1:
         type: string
   v1GenerateApiKeyResponse:
     type: object
@@ -329,7 +329,7 @@ definitions:
   v1LockKeyRequest:
     type: object
     properties:
-      publicKey:
+      publicKeyG1:
         type: string
   v1LockKeyResponse:
     type: object
@@ -345,12 +345,12 @@ definitions:
   v1RotateApiKeyRequest:
     type: object
     properties:
-      publicKey:
+      publicKeyG1:
         type: string
   v1RotateApiKeyResponse:
     type: object
     properties:
-      publicKey:
+      publicKeyG1:
         type: string
       apiKey:
         type: string
@@ -399,7 +399,7 @@ definitions:
   v1UnlockKeyRequest:
     type: object
     properties:
-      publicKey:
+      publicKeyG1:
         type: string
   v1UnlockKeyResponse:
     type: object

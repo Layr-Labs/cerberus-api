@@ -13,31 +13,31 @@ service Admin {
 }
 
 message LockKeyRequest {
-  string public_key = 1;
+  string public_key_g1 = 1;
 }
 
 message LockKeyResponse {
 }
 
 message UnlockKeyRequest {
-  string public_key = 1;
+  string public_key_g1 = 1;
 }
 
 message UnlockKeyResponse {
 }
 
 message RotateApiKeyRequest {
-  string public_key = 1;
+  string public_key_g1 = 1;
 }
 
 message RotateApiKeyResponse {
-  string public_key = 1;
+  string public_key_g1 = 1;
 
   string api_key = 2;
 }
 
 message GenerateApiKeyRequest {
-  string public_key = 1;
+  string public_key_g1 = 1;
 }
 
 message GenerateApiKeyResponse {

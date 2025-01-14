@@ -2,7 +2,7 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LockKeyRequest {
     #[prost(string, tag = "1")]
-    pub public_key: ::prost::alloc::string::String,
+    pub public_key_g1: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -11,7 +11,7 @@ pub struct LockKeyResponse {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UnlockKeyRequest {
     #[prost(string, tag = "1")]
-    pub public_key: ::prost::alloc::string::String,
+    pub public_key_g1: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -20,13 +20,13 @@ pub struct UnlockKeyResponse {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RotateApiKeyRequest {
     #[prost(string, tag = "1")]
-    pub public_key: ::prost::alloc::string::String,
+    pub public_key_g1: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RotateApiKeyResponse {
     #[prost(string, tag = "1")]
-    pub public_key: ::prost::alloc::string::String,
+    pub public_key_g1: ::prost::alloc::string::String,
     #[prost(string, tag = "2")]
     pub api_key: ::prost::alloc::string::String,
 }
@@ -34,7 +34,7 @@ pub struct RotateApiKeyResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateApiKeyRequest {
     #[prost(string, tag = "1")]
-    pub public_key: ::prost::alloc::string::String,
+    pub public_key_g1: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
