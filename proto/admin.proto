@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package admin.v1;
+
+option go_package = "github.com/layr-labs/cerberus-api/pkg/api/v1";
+
+service Admin {
+  rpc LockKey(LockKeyRequest) returns (LockKeyResponse) {}
+  rpc UnlockKey(UnlockKeyRequest) returns (UnlockKeyResponse) {}
+  rpc GenerateNewApiKey(GenerateNewApiKeyRequest) returns (GenerateNewApiKeyResponse) {}
+  rpc ListAllKeys(ListAllKeysRequest) returns (ListAllKeysResponse) {}
+}
+
+message LockKeyRequest {
+  string public_key_g1 = 1;
+}
+
+message LockKeyResponse {
+}
+
+message UnlockKeyRequest {
+  string public_key_g1 = 1;
+}
+
+message UnlockKeyResponse {
+}
+
+message GenerateNewApiKeyRequest {
+  string public_key_g1 = 1;
+}
+
+message GenerateNewApiKeyResponse {
+  string public_key_g1 = 1;
+
+  string api_key = 2;
+}
+
+message KeyMetadata {
+  string public_key_g1 = 1;
+  string public_key_g2 = 2;
+  bool locked = 3;
+  string created_at = 4;
+  string updated_at = 5;
+}
+
+message ListAllKeysRequest {
+}
+
+message ListAllKeysResponse {
+  repeated KeyMetadata keys = 1;
+}
+
