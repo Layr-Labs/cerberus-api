@@ -18,13 +18,13 @@ pub struct UnlockKeyRequest {
 pub struct UnlockKeyResponse {}
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RotateApiKeyRequest {
+pub struct GenerateNewApiKeyRequest {
     #[prost(string, tag = "1")]
     pub public_key_g1: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RotateApiKeyResponse {
+pub struct GenerateNewApiKeyResponse {
     #[prost(string, tag = "1")]
     pub public_key_g1: ::prost::alloc::string::String,
     #[prost(string, tag = "2")]
@@ -32,15 +32,26 @@ pub struct RotateApiKeyResponse {
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GenerateApiKeyRequest {
+pub struct KeyMetadata {
     #[prost(string, tag = "1")]
     pub public_key_g1: ::prost::alloc::string::String,
+    #[prost(string, tag = "2")]
+    pub public_key_g2: ::prost::alloc::string::String,
+    #[prost(bool, tag = "3")]
+    pub locked: bool,
+    #[prost(string, tag = "4")]
+    pub created_at: ::prost::alloc::string::String,
+    #[prost(string, tag = "5")]
+    pub updated_at: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GenerateApiKeyResponse {
-    #[prost(string, tag = "1")]
-    pub api_key: ::prost::alloc::string::String,
+pub struct ListAllKeysRequest {}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAllKeysResponse {
+    #[prost(message, repeated, tag = "1")]
+    pub keys: ::prost::alloc::vec::Vec<KeyMetadata>,
 }
 /// Generated client implementations.
 pub mod admin_client {
@@ -171,11 +182,11 @@ pub mod admin_client {
             req.extensions_mut().insert(GrpcMethod::new("admin.v1.Admin", "UnlockKey"));
             self.inner.unary(req, path, codec).await
         }
-        pub async fn rotate_api_key(
+        pub async fn generate_new_api_key(
             &mut self,
-            request: impl tonic::IntoRequest<super::RotateApiKeyRequest>,
+            request: impl tonic::IntoRequest<super::GenerateNewApiKeyRequest>,
         ) -> std::result::Result<
-            tonic::Response<super::RotateApiKeyResponse>,
+            tonic::Response<super::GenerateNewApiKeyResponse>,
             tonic::Status,
         > {
             self.inner
@@ -189,19 +200,18 @@ pub mod admin_client {
                 })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/admin.v1.Admin/RotateApiKey",
+                "/admin.v1.Admin/GenerateNewApiKey",
             );
             let mut req = request.into_request();
             req.extensions_mut()
-                .insert(GrpcMethod::new("admin.v1.Admin", "RotateApiKey"));
+                .insert(GrpcMethod::new("admin.v1.Admin", "GenerateNewApiKey"));
             self.inner.unary(req, path, codec).await
         }
-        /// GenerateApiKey this is for generating API key for previously generated keys which did not have API key. It should fail for keys which already has API Key
-        pub async fn generate_api_key(
+        pub async fn list_all_keys(
             &mut self,
-            request: impl tonic::IntoRequest<super::GenerateApiKeyRequest>,
+            request: impl tonic::IntoRequest<super::ListAllKeysRequest>,
         ) -> std::result::Result<
-            tonic::Response<super::GenerateApiKeyResponse>,
+            tonic::Response<super::ListAllKeysResponse>,
             tonic::Status,
         > {
             self.inner
@@ -215,11 +225,11 @@ pub mod admin_client {
                 })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/admin.v1.Admin/GenerateApiKey",
+                "/admin.v1.Admin/ListAllKeys",
             );
             let mut req = request.into_request();
             req.extensions_mut()
-                .insert(GrpcMethod::new("admin.v1.Admin", "GenerateApiKey"));
+                .insert(GrpcMethod::new("admin.v1.Admin", "ListAllKeys"));
             self.inner.unary(req, path, codec).await
         }
     }
@@ -242,19 +252,18 @@ pub mod admin_server {
             tonic::Response<super::UnlockKeyResponse>,
             tonic::Status,
         >;
-        async fn rotate_api_key(
+        async fn generate_new_api_key(
             &self,
-            request: tonic::Request<super::RotateApiKeyRequest>,
+            request: tonic::Request<super::GenerateNewApiKeyRequest>,
         ) -> std::result::Result<
-            tonic::Response<super::RotateApiKeyResponse>,
+            tonic::Response<super::GenerateNewApiKeyResponse>,
             tonic::Status,
         >;
-        /// GenerateApiKey this is for generating API key for previously generated keys which did not have API key. It should fail for keys which already has API Key
-        async fn generate_api_key(
+        async fn list_all_keys(
             &self,
-            request: tonic::Request<super::GenerateApiKeyRequest>,
+            request: tonic::Request<super::ListAllKeysRequest>,
         ) -> std::result::Result<
-            tonic::Response<super::GenerateApiKeyResponse>,
+            tonic::Response<super::ListAllKeysResponse>,
             tonic::Status,
         >;
     }
@@ -421,25 +430,25 @@ pub mod admin_server {
                     };
                     Box::pin(fut)
                 }
-                "/admin.v1.Admin/RotateApiKey" => {
+                "/admin.v1.Admin/GenerateNewApiKey" => {
                     #[allow(non_camel_case_types)]
-                    struct RotateApiKeySvc<T: Admin>(pub Arc<T>);
+                    struct GenerateNewApiKeySvc<T: Admin>(pub Arc<T>);
                     impl<
                         T: Admin,
-                    > tonic::server::UnaryService<super::RotateApiKeyRequest>
-                    for RotateApiKeySvc<T> {
-                        type Response = super::RotateApiKeyResponse;
+                    > tonic::server::UnaryService<super::GenerateNewApiKeyRequest>
+                    for GenerateNewApiKeySvc<T> {
+                        type Response = super::GenerateNewApiKeyResponse;
                         type Future = BoxFuture<
                             tonic::Response<Self::Response>,
                             tonic::Status,
                         >;
                         fn call(
                             &mut self,
-                            request: tonic::Request<super::RotateApiKeyRequest>,
+                            request: tonic::Request<super::GenerateNewApiKeyRequest>,
                         ) -> Self::Future {
                             let inner = Arc::clone(&self.0);
                             let fut = async move {
-                                (*inner).rotate_api_key(request).await
+                                (*inner).generate_new_api_key(request).await
                             };
                             Box::pin(fut)
                         }
@@ -451,7 +460,7 @@ pub mod admin_server {
                     let inner = self.inner.clone();
                     let fut = async move {
                         let inner = inner.0;
-                        let method = RotateApiKeySvc(inner);
+                        let method = GenerateNewApiKeySvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = tonic::server::Grpc::new(codec)
                             .apply_compression_config(
@@ -467,25 +476,23 @@ pub mod admin_server {
                     };
                     Box::pin(fut)
                 }
-                "/admin.v1.Admin/GenerateApiKey" => {
+                "/admin.v1.Admin/ListAllKeys" => {
                     #[allow(non_camel_case_types)]
-                    struct GenerateApiKeySvc<T: Admin>(pub Arc<T>);
-                    impl<
-                        T: Admin,
-                    > tonic::server::UnaryService<super::GenerateApiKeyRequest>
-                    for GenerateApiKeySvc<T> {
-                        type Response = super::GenerateApiKeyResponse;
+                    struct ListAllKeysSvc<T: Admin>(pub Arc<T>);
+                    impl<T: Admin> tonic::server::UnaryService<super::ListAllKeysRequest>
+                    for ListAllKeysSvc<T> {
+                        type Response = super::ListAllKeysResponse;
                         type Future = BoxFuture<
                             tonic::Response<Self::Response>,
                             tonic::Status,
                         >;
                         fn call(
                             &mut self,
-                            request: tonic::Request<super::GenerateApiKeyRequest>,
+                            request: tonic::Request<super::ListAllKeysRequest>,
                         ) -> Self::Future {
                             let inner = Arc::clone(&self.0);
                             let fut = async move {
-                                (*inner).generate_api_key(request).await
+                                (*inner).list_all_keys(request).await
                             };
                             Box::pin(fut)
                         }
@@ -497,7 +504,7 @@ pub mod admin_server {
                     let inner = self.inner.clone();
                     let fut = async move {
                         let inner = inner.0;
-                        let method = GenerateApiKeySvc(inner);
+                        let method = ListAllKeysSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = tonic::server::Grpc::new(codec)
                             .apply_compression_config(

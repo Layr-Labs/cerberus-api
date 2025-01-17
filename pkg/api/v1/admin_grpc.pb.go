@@ -19,10 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Admin_LockKey_FullMethodName        = "/admin.v1.Admin/LockKey"
-	Admin_UnlockKey_FullMethodName      = "/admin.v1.Admin/UnlockKey"
-	Admin_RotateApiKey_FullMethodName   = "/admin.v1.Admin/RotateApiKey"
-	Admin_GenerateApiKey_FullMethodName = "/admin.v1.Admin/GenerateApiKey"
+	Admin_LockKey_FullMethodName           = "/admin.v1.Admin/LockKey"
+	Admin_UnlockKey_FullMethodName         = "/admin.v1.Admin/UnlockKey"
+	Admin_GenerateNewApiKey_FullMethodName = "/admin.v1.Admin/GenerateNewApiKey"
+	Admin_ListAllKeys_FullMethodName       = "/admin.v1.Admin/ListAllKeys"
 )
 
 // AdminClient is the client API for Admin service.
@@ -31,9 +31,8 @@ const (
 type AdminClient interface {
 	LockKey(ctx context.Context, in *LockKeyRequest, opts ...grpc.CallOption) (*LockKeyResponse, error)
 	UnlockKey(ctx context.Context, in *UnlockKeyRequest, opts ...grpc.CallOption) (*UnlockKeyResponse, error)
-	RotateApiKey(ctx context.Context, in *RotateApiKeyRequest, opts ...grpc.CallOption) (*RotateApiKeyResponse, error)
-	// GenerateApiKey this is for generating API key for previously generated keys which did not have API key. It should fail for keys which already has API Key
-	GenerateApiKey(ctx context.Context, in *GenerateApiKeyRequest, opts ...grpc.CallOption) (*GenerateApiKeyResponse, error)
+	GenerateNewApiKey(ctx context.Context, in *GenerateNewApiKeyRequest, opts ...grpc.CallOption) (*GenerateNewApiKeyResponse, error)
+	ListAllKeys(ctx context.Context, in *ListAllKeysRequest, opts ...grpc.CallOption) (*ListAllKeysResponse, error)
 }
 
 type adminClient struct {
@@ -62,18 +61,18 @@ func (c *adminClient) UnlockKey(ctx context.Context, in *UnlockKeyRequest, opts 
 	return out, nil
 }
 
-func (c *adminClient) RotateApiKey(ctx context.Context, in *RotateApiKeyRequest, opts ...grpc.CallOption) (*RotateApiKeyResponse, error) {
-	out := new(RotateApiKeyResponse)
-	err := c.cc.Invoke(ctx, Admin_RotateApiKey_FullMethodName, in, out, opts...)
+func (c *adminClient) GenerateNewApiKey(ctx context.Context, in *GenerateNewApiKeyRequest, opts ...grpc.CallOption) (*GenerateNewApiKeyResponse, error) {
+	out := new(GenerateNewApiKeyResponse)
+	err := c.cc.Invoke(ctx, Admin_GenerateNewApiKey_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *adminClient) GenerateApiKey(ctx context.Context, in *GenerateApiKeyRequest, opts ...grpc.CallOption) (*GenerateApiKeyResponse, error) {
-	out := new(GenerateApiKeyResponse)
-	err := c.cc.Invoke(ctx, Admin_GenerateApiKey_FullMethodName, in, out, opts...)
+func (c *adminClient) ListAllKeys(ctx context.Context, in *ListAllKeysRequest, opts ...grpc.CallOption) (*ListAllKeysResponse, error) {
+	out := new(ListAllKeysResponse)
+	err := c.cc.Invoke(ctx, Admin_ListAllKeys_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -86,9 +85,8 @@ func (c *adminClient) GenerateApiKey(ctx context.Context, in *GenerateApiKeyRequ
 type AdminServer interface {
 	LockKey(context.Context, *LockKeyRequest) (*LockKeyResponse, error)
 	UnlockKey(context.Context, *UnlockKeyRequest) (*UnlockKeyResponse, error)
-	RotateApiKey(context.Context, *RotateApiKeyRequest) (*RotateApiKeyResponse, error)
-	// GenerateApiKey this is for generating API key for previously generated keys which did not have API key. It should fail for keys which already has API Key
-	GenerateApiKey(context.Context, *GenerateApiKeyRequest) (*GenerateApiKeyResponse, error)
+	GenerateNewApiKey(context.Context, *GenerateNewApiKeyRequest) (*GenerateNewApiKeyResponse, error)
+	ListAllKeys(context.Context, *ListAllKeysRequest) (*ListAllKeysResponse, error)
 	mustEmbedUnimplementedAdminServer()
 }
 
@@ -102,11 +100,11 @@ func (UnimplementedAdminServer) LockKey(context.Context, *LockKeyRequest) (*Lock
 func (UnimplementedAdminServer) UnlockKey(context.Context, *UnlockKeyRequest) (*UnlockKeyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UnlockKey not implemented")
 }
-func (UnimplementedAdminServer) RotateApiKey(context.Context, *RotateApiKeyRequest) (*RotateApiKeyResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RotateApiKey not implemented")
+func (UnimplementedAdminServer) GenerateNewApiKey(context.Context, *GenerateNewApiKeyRequest) (*GenerateNewApiKeyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GenerateNewApiKey not implemented")
 }
-func (UnimplementedAdminServer) GenerateApiKey(context.Context, *GenerateApiKeyRequest) (*GenerateApiKeyResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GenerateApiKey not implemented")
+func (UnimplementedAdminServer) ListAllKeys(context.Context, *ListAllKeysRequest) (*ListAllKeysResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListAllKeys not implemented")
 }
 func (UnimplementedAdminServer) mustEmbedUnimplementedAdminServer() {}
 
@@ -157,38 +155,38 @@ func _Admin_UnlockKey_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Admin_RotateApiKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RotateApiKeyRequest)
+func _Admin_GenerateNewApiKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GenerateNewApiKeyRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AdminServer).RotateApiKey(ctx, in)
+		return srv.(AdminServer).GenerateNewApiKey(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Admin_RotateApiKey_FullMethodName,
+		FullMethod: Admin_GenerateNewApiKey_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AdminServer).RotateApiKey(ctx, req.(*RotateApiKeyRequest))
+		return srv.(AdminServer).GenerateNewApiKey(ctx, req.(*GenerateNewApiKeyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Admin_GenerateApiKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GenerateApiKeyRequest)
+func _Admin_ListAllKeys_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListAllKeysRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AdminServer).GenerateApiKey(ctx, in)
+		return srv.(AdminServer).ListAllKeys(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Admin_GenerateApiKey_FullMethodName,
+		FullMethod: Admin_ListAllKeys_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AdminServer).GenerateApiKey(ctx, req.(*GenerateApiKeyRequest))
+		return srv.(AdminServer).ListAllKeys(ctx, req.(*ListAllKeysRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -209,12 +207,12 @@ var Admin_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Admin_UnlockKey_Handler,
 		},
 		{
-			MethodName: "RotateApiKey",
-			Handler:    _Admin_RotateApiKey_Handler,
+			MethodName: "GenerateNewApiKey",
+			Handler:    _Admin_GenerateNewApiKey_Handler,
 		},
 		{
-			MethodName: "GenerateApiKey",
-			Handler:    _Admin_GenerateApiKey_Handler,
+			MethodName: "ListAllKeys",
+			Handler:    _Admin_ListAllKeys_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

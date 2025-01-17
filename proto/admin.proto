@@ -7,9 +7,8 @@ option go_package = "github.com/layr-labs/cerberus-api/pkg/api/v1";
 service Admin {
   rpc LockKey(LockKeyRequest) returns (LockKeyResponse) {}
   rpc UnlockKey(UnlockKeyRequest) returns (UnlockKeyResponse) {}
-  rpc RotateApiKey(RotateApiKeyRequest) returns (RotateApiKeyResponse) {}
-  // GenerateApiKey this is for generating API key for previously generated keys which did not have API key. It should fail for keys which already has API Key
-  rpc GenerateApiKey(GenerateApiKeyRequest) returns (GenerateApiKeyResponse) {}
+  rpc GenerateNewApiKey(GenerateNewApiKeyRequest) returns (GenerateNewApiKeyResponse) {}
+  rpc ListAllKeys(ListAllKeysRequest) returns (ListAllKeysResponse) {}
 }
 
 message LockKeyRequest {
@@ -26,20 +25,28 @@ message UnlockKeyRequest {
 message UnlockKeyResponse {
 }
 
-message RotateApiKeyRequest {
+message GenerateNewApiKeyRequest {
   string public_key_g1 = 1;
 }
 
-message RotateApiKeyResponse {
+message GenerateNewApiKeyResponse {
   string public_key_g1 = 1;
 
   string api_key = 2;
 }
 
-message GenerateApiKeyRequest {
+message KeyMetadata {
   string public_key_g1 = 1;
+  string public_key_g2 = 2;
+  bool locked = 3;
+  string created_at = 4;
+  string updated_at = 5;
 }
 
-message GenerateApiKeyResponse {
-  string api_key = 1;
+message ListAllKeysRequest {
 }
+
+message ListAllKeysResponse {
+  repeated KeyMetadata keys = 1;
+}
+
