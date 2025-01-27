@@ -57,13 +57,13 @@ func main() {
     defer cancel()
 
     req := &v1.SignGenericRequest{
-		PublicKeyG1: "0xabcd",
-		Password:  "p@$$w0rd",
-		Data:      []byte{0x01, 0x02, 0x03},
+        PublicKeyG1: "0xabcd",
+        Password:  "p@$$w0rd",
+        Data:      []byte{0x01, 0x02, 0x03},
     }
 
     // Pass the API key to the signer client
-	ctx = metadata.AppendToOutgoingContext(ctx, "authorization", SIGNER_API_KEY)
+    ctx = metadata.AppendToOutgoingContext(ctx, "authorization", SIGNER_API_KEY)
     resp, err := c.SignGeneric(ctx, req)
     if err != nil {
         log.Fatalf("could not sign: %v", err)
